@@ -5,6 +5,14 @@ const gitHelpers = require('../lib/git-helpers')
 
 console.log('Using drone')
 
+/**
+ * Should update the `package-lock.json`
+ */
+function shouldUpdate () {
+  let re = /^(chore|fix)\(package\): update [^ ]+ to version.*$/mi
+  return re.test(env.DRONE_COMMIT_MESSAGE)
+}
+
 module.exports = {
   // The GitHub repo slug
   repoSlug: env.DRONE_REPO,
@@ -12,7 +20,7 @@ module.exports = {
   branchName: env.DRONE_COMMIT_BRANCH,
   // Is this the first push on this branch
   // i.e. the Greenkeeper commit
-  firstPush: gitHelpers.getNumberOfCommitsOnBranch(env.DRONE_COMMIT_BRANCH) === 1,
+  firstPush: shouldUpdate(),
   // Is this a regular build
   correctBuild: env.DRONE_BUILD_EVENT=== 'push',
   // Should the lockfile be uploaded from this build
