@@ -3,6 +3,8 @@
 const env = process.env
 const gitHelpers = require('../lib/git-helpers')
 
+console.log('Using drone')
+
 module.exports = {
   // The GitHub repo slug
   repoSlug: env.DRONE_REPO,
